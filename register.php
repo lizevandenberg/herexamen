@@ -8,6 +8,8 @@ if(isset($_POST['register_btn']))
 {
     $username=mysqli_real_escape_string($db,$_POST['username']);
     $email=mysqli_real_escape_string($db,$_POST['email']);
+    $firstname=mysqli_real_escape_string($db,$_POST['voornaam']);
+    $lastname=mysqli_real_escape_string($db,$_POST['achternaam']);
     if (substr($email, -22) != $PostfixWhitelist){
         echo '<script language="javascript">';
 		echo 'alert("Only valid TMM emails allowed ")';
@@ -37,8 +39,10 @@ if(isset($_POST['register_btn']))
             if(($password==$password2) and (strlen($password) > 4))
             {   //Create User
                 $password=md5($password); //hash password before storing for security purposes
-                $sql="INSERT INTO users(username, email, password ) VALUES('$username','$email','$password')"; 
+                $sql="INSERT INTO users(username, email, password, firstname, lastname ) VALUES('$username','$email','$password','$firstname','$lastname')"; 
                 mysqli_query($db,$sql);  
+				$kaching="INSERT INTO transactions(sender, receiver,amount,comment) SELECT  0, userid, 10, 'Welkom bij de Kaching familie!' FROM userlookup WHERE voornaam='$firstname' AND achternaam='$lastname'";
+                mysqli_query($db,$kaching); 
                 $_SESSION['username']=$username;
                 header("location:home.php");  //redirect home page
             }
@@ -102,6 +106,14 @@ if(isset($_POST['register_btn']))
      <tr>
            <td>Email: </td>
            <td><input type="email" name="email" class="textInput"></td>
+     </tr>
+     <tr>
+           <td>Voornaam: </td>
+           <td><input type="text" name="voornaam" class="textInput"></td>
+     </tr>
+     <tr>
+           <td>Achternaam: </td>
+           <td><input type="text" name="achternaam" class="textInput"></td>
      </tr>
       <tr>
            <td>Paswoord: </td>
