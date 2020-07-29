@@ -2,18 +2,22 @@
 session_start();
 
 //connect to database
-$db=mysqli_connect("localhost","root","root","mysite");
+$db=mysqli_connect("127.0.0.1","root","root","mysite");
 $PostfixWhitelist = "@student.thomasmore.be";
 if(isset($_POST['register_btn']))
 {
     $username=mysqli_real_escape_string($db,$_POST['username']);
     $email=mysqli_real_escape_string($db,$_POST['email']);
-    if (!(substr($email, -22) == $PostfixWhitelist)){
-      header("location:register.php");
+    if (substr($email, -22) != $PostfixWhitelist){
+        echo '<script language="javascript">';
+		echo 'alert("Only valid TMM emails allowed ")';
+        echo '</script>';
     }
+	else
+	{
     $password=mysqli_real_escape_string($db,$_POST['password']);
     $password2=mysqli_real_escape_string($db,$_POST['password2']);  
-    $query = "SELECT 1 FROM users WHERE username = '$username'";
+    $query = "SELECT 1 FROM users WHERE username = '$username' OR email = '$email'";
     
     $result=mysqli_query($db,$query);
       if($result)
@@ -23,15 +27,15 @@ if(isset($_POST['register_btn']))
         {
                 
                 echo '<script language="javascript">';
-                echo 'alert("Username already exists")';
+                echo 'alert("Username or Email already exists")';
                 echo '</script>';
         }
         
           else
           {
             
-            if(($password==$password2) and (!strlen($password) < 5))
-            {           //Create User
+            if(($password==$password2) and (strlen($password) > 4))
+            {   //Create User
                 $password=md5($password); //hash password before storing for security purposes
                 $sql="INSERT INTO users(username, email, password ) VALUES('$username','$email','$password')"; 
                 mysqli_query($db,$sql);  
@@ -43,7 +47,7 @@ if(isset($_POST['register_btn']))
                 $_SESSION['message']="De wachtwoorden komen niet overeen of zijn niet lang genoeg.";   
             }
           }
-      }
+	}}
       
 
 }
@@ -101,17 +105,6 @@ if(isset($_POST['register_btn']))
      </tr>
       <tr>
            <td>Paswoord: </td>
-           <td style="visibility:
-           <?php 
-           if(isset($_POST['password'])){
-            
-              echo "visible;\"> je wachtwoorden komen niet overeen of zijn te kort <tr></tr>";
-           }
-           else{
-            echo "collapse;\"> <tr></tr>";
-           }
-           ?>
-
            <td><input type="password" name="password" class="textInput"></td>
      </tr>
       <tr>
