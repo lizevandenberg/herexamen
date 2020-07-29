@@ -2,7 +2,7 @@
 session_start();
 
 //connect to database
-$db=mysqli_connect("127.0.0.1","root","root","mysite");
+$db=mysqli_connect("localhost","root","root","mysite");
 $PostfixWhitelist = "@student.thomasmore.be";
 if(isset($_POST['register_btn']))
 {
