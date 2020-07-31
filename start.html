@@ -5,19 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual Currency App</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    
 </head>
 <body>
 <div id="kader">
-    <button id="myButton1" class="float-left submit-button"> Log in</button>
-    <button id="myButton2" class="float-left submit-button"> Registreer</button>
+    <img id="logo" src="img/logo-8.png" alt="logo">
+    <button id="myButton1" class="float-left submit-button"> Registreer </button>
+    <br>
+    <button id="myButton2" class="float-left submit-button"> Log in</button>
 </div>
 
 <script type="text/javascript">
     document.getElementById("myButton1").onclick = function () {
-        location.href = "login.php";
+        location.href = "register.php";
     };
     document.getElementById("myButton2").onclick = function () {
-        location.href = "register.php";
+        location.href = "login.php";
     };
 </script>
 </body>

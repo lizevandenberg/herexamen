@@ -67,30 +67,11 @@ if(isset($_POST['register_btn']))
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
- 
-<br>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-  <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav center">
-        <li><a href="login.php">Log in</a></li>
-        <li><a href="register.php">Registeer</a></li>
-      </ul>
-
-    </div>
-  </div>
-</nav>
-
-
-<main class="main-content">
-
- <div class="col-md-6 col-md-offset-2">
-
+<div id="kader">
 <?php
     if(isset($_SESSION['message']))
     {
@@ -101,41 +82,34 @@ if(isset($_POST['register_btn']))
 <form method="post" action="register.php">
   <table>
      <tr>
-           <td>Gebruikersnaam: </td>
-           <td><input type="text" name="username" class="textInput"></td>
+           <td><input type="text" value="Gebruikersnaam" name="username" class="textInput"></td>
      </tr>
      <tr>
-           <td>Email: </td>
-           <td><input type="email" name="email" class="textInput"></td>
+           <td><input type="email" value="Email" name="email" class="textInput"></td>
      </tr>
      <tr>
-           <td>Voornaam: </td>
-           <td><input type="text" name="voornaam" class="textInput"></td>
+           <td><input type="text" value="Voornaam" name="voornaam" class="textInput"></td>
      </tr>
      <tr>
-           <td>Achternaam: </td>
-           <td><input type="text" name="achternaam" class="textInput"></td>
+           <td><input type="text" value="Achternaam" name="achternaam" class="textInput"></td>
      </tr>
       <tr>
-           <td>Paswoord: </td>
-           <td><input type="password" name="password" class="textInput"></td>
+           <td><input type="password" value="Wachtwoord" name="password" class="textInput"></td>
      </tr>
       <tr>
-           <td>Paswoord bevestigen: </td>
-           <td><input type="password" name="password2"class="textInput"></td>
+           <td><input type="password" value="Wachtwoord bevestigen" name="password2"class="textInput"></td>
      </tr>
-      <tr>
-           <td></td>
-           <td><input type="submit" name="register_btn" class="Register"></td>
-     </tr>
+      <button id="myButton3" class="float-left submit-button"> Log in</button>
     </table>
 
 </form>
 </div>
 
-</main>
-</div>
-
+<script type="text/javascript">
+    document.getElementById("myButton3").onclick = function () {
+        location.href = "home.php";
+    };
+</script>
 </body>
 </html>
 

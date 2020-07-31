@@ -1,11 +1,44 @@
 body{ 
     background: linear-gradient(to right, #F09656, #EA6361);
+    display: flex;
+    justify-content: center;
 }
 
 #kader{
-  height: 400px;
-  width: 270px;
+  margin-top: 130px;
+  height: 500px;
+  width: 400px;
   border-radius:10%;
   background-color: white; 
-  margin-left: 400px;
+}
+
+#logo{
+    margin-top: 20px;
+    margin-left: 60px;
+}
+
+#myButton1, #myButton2{
+   background-color: #C6C3BD ;
+   color: #FFFFFF;
+   border-color:#C6C3BD ;
+   box-shadow: none;
+   font-family: 'Montserrat', sans-serif;
+}
+
+#myButton1{ 
+    margin-top: 100px ;
+    margin-left: 70px;
+    width: 250px;
+    height: 40px;
+    border-radius: 25px;
+    font-size: 20px;
+}
+
+#myButton2{ 
+    margin-top: 50px ;
+    margin-left: 70px;
+    width: 250px;
+    height: 40px;
+    border-radius: 25px;
+    font-size: 20px;
 }
