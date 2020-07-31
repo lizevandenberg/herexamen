@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Currency App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="kader">
+    <button id="myButton1" class="float-left submit-button"> Log in</button>
+    <button id="myButton2" class="float-left submit-button"> Registreer</button>
+</div>
+
+<script type="text/javascript">
+    document.getElementById("myButton1").onclick = function () {
+        location.href = "login.php";
+    };
+    document.getElementById("myButton2").onclick = function () {
+        location.href = "register.php";
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+body{ 
+    background: linear-gradient(to right, #F09656, #EA6361);
+}
+
+#kader{
+  height: 400px;
+  width: 270px;
+  border-radius:10%;
+  background-color: white; 
+  margin-left: 400px;
+}
