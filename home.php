@@ -1,14 +1,8 @@
 <?php
-
-include 'mysqldb.php';
-include 'usermanagement.php';
-include 'user.php';
 session_start();
 
-	$user=$_SESSION['user'];
-	$userid = $user->getuserid();
-	$username = $user->getusername();
-	
+//connect to database
+$db=mysqli_connect("localhost","root","root","mysite");
 
 
 ?>
@@ -20,6 +14,8 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
   
 </head>
 <body>
@@ -44,9 +40,16 @@ session_start();
 
 <main class="main-content">
  <div class="col-md-6 col-md-offset-4">
+<?php
+    if(isset($_SESSION['message']))
+    {
+         echo "<div id='error_msg'>".$_SESSION['message']."</div>";
+         unset($_SESSION['message']);
+    }
+?>
 <h1>Home</h1>
 <div>
-    <h4>Welkom <?php echo("Welkom $username"); ?></h4>
+    <h4>Welkom <?php echo $_SESSION['username']; ?></h4>
 </div>
 <a href="logout.php">Log out</a>
 </div>
