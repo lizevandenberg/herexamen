@@ -1,61 +1,58 @@
 <?php
+
+include 'mysqldb.php';
+include 'usermanagement.php';
 session_start();
 
-//connect to database
-$db=mysqli_connect("localhost","root","root","mysite");
 $PostfixWhitelist = "@student.thomasmore.be";
-if(isset($_POST['register_btn']))
-{
-    $username=mysqli_real_escape_string($db,$_POST['username']);
-    $email=mysqli_real_escape_string($db,$_POST['email']);
-    $firstname=mysqli_real_escape_string($db,$_POST['voornaam']);
-    $lastname=mysqli_real_escape_string($db,$_POST['achternaam']);
-    if (substr($email, -22) != $PostfixWhitelist){
+if (isset($_POST['register_btn'])){
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $firstname = $_POST['voornaam'];
+    $lastname = $_POST['achternaam'];
+    if (substr($email, -22) != $PostfixWhitelist)
+    {
         echo '<script language="javascript">';
-		echo 'alert("Only valid TMM emails allowed ")';
+        echo 'alert("Only valid TMM emails allowed ")';
         echo '</script>';
     }
-	else
-	{
-    $password=mysqli_real_escape_string($db,$_POST['password']);
-    $password2=mysqli_real_escape_string($db,$_POST['password2']);  
-    $query = "SELECT 1 FROM users WHERE username = '$username' OR email = '$email'";
-    
-    $result=mysqli_query($db,$query);
-      if($result)
-      {
-     
-        if( mysqli_num_rows($result) > 0)
+    else
+    {
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+		$conn = new Usermanagement();
+        $result = $conn->CheckDuplicateUser($username,$email);
+        if ($result['flag'] == 1)
         {
-                
-                echo '<script language="javascript">';
-                echo 'alert("Username or Email already exists")';
-                echo '</script>';
+            echo '<script language="javascript">';
+            echo 'alert("Username or Email already exists")';
+            echo '</script>';
         }
-        
-          else
-          {
-            
-            if(($password==$password2) and (strlen($password) > 4))
-            {   //Create User
-                $password=md5($password); //hash password before storing for security purposes
-                $sql="INSERT INTO users(username, email, password, firstname, lastname ) VALUES('$username','$email','$password','$firstname','$lastname')"; 
-                mysqli_query($db,$sql);  
-				$kaching="INSERT INTO transactions(sender, receiver,amount,comment) SELECT  0, userid, 10, 'Welkom bij de Kaching familie!' FROM userlookup WHERE voornaam='$firstname' AND achternaam='$lastname'";
-                mysqli_query($db,$kaching); 
-                $_SESSION['username']=$username;
-                header("location:home.php");  //redirect home page
+
+        else
+        {
+
+            if (($password == $password2) and (strlen($password) > 4))
+            { //Create User
+                $password = md5($password); //hash password before storing for security purposes
+				$conn->RegisterNewUser($username,$email, $password,$firstname,$lastname);
+				$conn->InitialWalletFill($firstname,$lastname);
+                $_SESSION['username'] = $username;
+                header("location:home.php"); //redirect home page
+                
             }
             else
             {
-                $_SESSION['message']="De wachtwoorden komen niet overeen of zijn niet lang genoeg.";   
+				echo '<script language="javascript">';
+			    echo 'alert("De wachtwoorden komen niet overeen of zijn niet lang genoeg.")';
+			    echo '</script>';
             }
-          }
-	}}
-      
+        }
+    }
 
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -66,50 +63,66 @@ if(isset($_POST['register_btn']))
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div id="kader">
-<?php
-    if(isset($_SESSION['message']))
-    {
-         echo "<div id='error_msg'>".$_SESSION['message']."</div>";
-         unset($_SESSION['message']);
-    }
-?>
+<div class="container">
+ 
+<br>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+  <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav center">
+        <li><a href="login.php">Log in</a></li>
+        <li><a href="register.php">Registeer</a></li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<main class="main-content">
+<div class="col-md-6 col-md-offset-2">
 <form method="post" action="register.php">
   <table>
      <tr>
-           <td><input type="text" value="Gebruikersnaam" name="username" class="textInput"></td>
+           <td>Gebruikersnaam: </td>
+           <td><input type="text" name="username" class="textInput"></td>
      </tr>
      <tr>
-           <td><input type="email" value="Email" name="email" class="textInput"></td>
+           <td>Email: </td>
+           <td><input type="email" name="email" class="textInput"></td>
      </tr>
      <tr>
-           <td><input type="text" value="Voornaam" name="voornaam" class="textInput"></td>
+           <td>Voornaam: </td>
+           <td><input type="text" name="voornaam" class="textInput"></td>
      </tr>
      <tr>
-           <td><input type="text" value="Achternaam" name="achternaam" class="textInput"></td>
+           <td>Achternaam: </td>
+           <td><input type="text" name="achternaam" class="textInput"></td>
      </tr>
       <tr>
-           <td><input type="password" value="Wachtwoord" name="password" class="textInput"></td>
+           <td>Paswoord: </td>
+           <td><input type="text" name="password" class="textInput"></td>
      </tr>
       <tr>
-           <td><input type="password" value="Wachtwoord bevestigen" name="password2"class="textInput"></td>
+           <td>Paswoord bevestigen: </td>
+           <td><input type="text" name="password2"class="textInput"></td>
      </tr>
-      <button id="myButton3" class="float-left submit-button"> Log in</button>
+      <tr>
+           <td></td>
+           <td><input type="submit" name="register_btn" class="Register"></td>
+     </tr>
     </table>
 
 </form>
 </div>
 
-<script type="text/javascript">
-    document.getElementById("myButton3").onclick = function () {
-        location.href = "home.php";
-    };
-</script>
+</main>
+</div>
+
 </body>
 </html>
 

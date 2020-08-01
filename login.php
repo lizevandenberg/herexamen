@@ -1,38 +1,39 @@
 <?php
+
+include 'mysqldb.php';
+include 'usermanagement.php';
+include 'user.php';
+
 session_start();
 if(  isset($_SESSION['username']) )
 {
   header("location:home.php");
   die();
 }
-//connect to database
-$db=mysqli_connect("localhost","root","root","mysite");
-if($db)
-{
   if(isset($_POST['login_btn']))
   {
-      $username=mysqli_real_escape_string($db,$_POST['username']);
-      $password=mysqli_real_escape_string($db,$_POST['password']);
-      $password=md5($password);
-      $sql="SELECT * FROM users WHERE  username='$username' AND password='$password'";
-      $result=mysqli_query($db,$sql);
-      
-      if($result)
+	  $username=$_POST['username'];
+	  echo($username);
+      $password=$_POST['password'];
+	  $password = md5($password);
+{	  $conn = new UserManagement();
+      $result = $conn->Login($username,$password);
+      if($result['flag'] == 1)
       {
-     
-        if( mysqli_num_rows($result)>=1)
-        {
             $_SESSION['message']="Je bent ingelogd";
             $_SESSION['username']=$username;
+			$user = new User($username);
+			$_SESSION['user']=$user;
             header("location:home.php");
         }
        else
        {
-              $_SESSION['message']="Gebruikersnaam en paswoord komen niet overeen.";
+              	echo '<script language="javascript">';
+			    echo 'alert("Wachtwoord onjuist of de gebruiker bestaat niet.")';
+			    echo '</script>';
        }
-      }
-  }
-}
+  }}
+  
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +44,6 @@ if($db)
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -65,14 +65,7 @@ if($db)
 </nav>
 
 <main class="main-content">
- <div class="col-md-6 col-md-offset-2">
-<?php
-    if(isset($_SESSION['message']))
-    {
-         echo "<div id='error_msg'>".$_SESSION['message']."</div>";
-         unset($_SESSION['message']);
-    }
-?>
+<div class="col-md-6 col-md-offset-2">
 <form method="post" action="login.php">
   <table>
      <tr>
