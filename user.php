@@ -8,19 +8,28 @@ class User extends MysqlDB
 	public function __construct($username){
 		parent::__construct();
 		$this->setusername($username);
-		$this->setuserid($userid);
-		$this->setcsrf();
+		$this->setuserid($username);
 	} 
    	public function setusername($username){
 		$this->username = $username;
 		
 		return 0;
+	}
+	
+	public function wakeupDBConnection(){
+		parent::__construct();
+		return 0;
+	} 
+
+	public function breakDBConnection(){
+		parent::__destruct();
+		return 0;
 	} 
 	
-	protected function setuserid($userid){
+	protected function setuserid($username){
 		
 		$LookupUserId = $this->pdo->prepare("SELECT userid AS userid FROM userlookup WHERE username = ?");
-        $LookupUserId->bindParam(1, $this->username);
+        $LookupUserId->bindParam(1, $username);
         $LookupUserId->execute();
         $result = $LookupUserId->fetch(PDO::FETCH_ASSOC);
 		$result = $result['userid'];
@@ -41,12 +50,14 @@ class User extends MysqlDB
 		return $this->username;
 	}
 	
-	public function getuserid($username=null)
-	{	if(!is_null($username))
+	public function getuserid($param=null)
+	{	
+	$this->wakeupDBConnection();
+		if(!is_null($param))
 	    {
 			
-		$lookup = $username;		
-		$LookupUserId = $this->pdo->prepare("SELECT userid AS userid FROM userlookup WHERE username = ?");
+		$lookup = $param;		
+		$LookupUserId = $this->pdo->prepare('SELECT userid AS userid FROM userlookup WHERE CONCAT(firstname," ",lastname) = ?');
         $LookupUserId->bindParam(1, $lookup);
         $LookupUserId->execute();
         $result = $LookupUserId->fetch(PDO::FETCH_ASSOC);
@@ -66,7 +77,23 @@ class User extends MysqlDB
 		
 		
 	}
+	
+	public function lookupUser($initials){
+		$LookupUserId = $this->pdo->prepare("SELECT username, firstname, lastname FROM userlookup WHERE LOWER(username) like CONCAT('%', LOWER(?), '%')");
+        $LookupUserId->bindParam(1, $initials);
+        $LookupUserId->execute();
+        $result = $LookupUserId->fetchAll(PDO::FETCH_ASSOC);
+		$results = array();
+		
+		foreach($result as $row){
+			array_push ($results,$row['firstname']." ".$row['lastname'].' ('.$row['username'].')');
+			
+		}		
+		
+		return json_encode($result);
+	}
 }
+
 
 
 

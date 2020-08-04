@@ -61,55 +61,68 @@ if (isset($_POST['register_btn'])){
   <title>Virtual Currency App</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/reset.css"> 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<div id="kader">
-<?php
-    if(isset($_SESSION['message']))
-    {
-         echo "<div id='error_msg'>".$_SESSION['message']."</div>";
-         unset($_SESSION['message']);
-    }
-?>
-<img id="profiel" src="img/foto-8.png" alt="logo">
+<div class="container">
+ 
+<br>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+  <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav center">
+        <li><a href="login.php">Log in</a></li>
+        <li><a href="register.php">Registeer</a></li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<main class="main-content">
+<div class="col-md-6 col-md-offset-2">
 <form method="post" action="register.php">
   <table>
      <tr>
-           <td><input id="form" type="text" placeholder="Gebruikersnaam" name="username" class="textInput"></td>
+           <td>Gebruikersnaam: </td>
+           <td><input type="text" name="username" class="textInput"></td>
      </tr>
      <tr>
-           <td><input id="form" type="email" placeholder="Email" name="email" class="textInput"></td>
+           <td>Email: </td>
+           <td><input type="email" name="email" class="textInput"></td>
      </tr>
      <tr>
-           <td><input id="form" type="text" placeholder="Voornaam" name="voornaam" class="textInput"></td>
+           <td>Voornaam: </td>
+           <td><input type="text" name="voornaam" class="textInput"></td>
      </tr>
      <tr>
-           <td><input id="form" type="text" placeholder="Achternaam" name="achternaam" class="textInput"></td>
+           <td>Achternaam: </td>
+           <td><input type="text" name="achternaam" class="textInput"></td>
      </tr>
       <tr>
-           <td><input id="form" type="password" placeholder="Wachtwoord" name="password" class="textInput"></td>
+           <td>Paswoord: </td>
+           <td><input type="text" name="password" class="textInput"></td>
      </tr>
       <tr>
-           <td><input id="form" type="password" placeholder="Wachtwoord bevestigen" name="password2"class="textInput"></td>
+           <td>Paswoord bevestigen: </td>
+           <td><input type="text" name="password2"class="textInput"></td>
      </tr>
       <tr>
-            <td><button id="myButton3" class="float-left submit-button"> Registeren</button></td>
+           <td></td>
+           <td><input type="submit" name="register_btn" class="Register"></td>
      </tr>
     </table>
 
 </form>
 </div>
-<script type="text/javascript">
-    document.getElementById("myButton3").onclick = function () {
-        location.href = "home.php";
-    };
-</script>
+
+</main>
+</div>
+
 </body>
 </html>
 

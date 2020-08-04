@@ -5,7 +5,7 @@ class MysqlDB
 private $dsn = "mysql:host=127.0.0.1;dbname=mysite";
 private $user = "root";
 private $passwd = "root";
-protected $pdo = null;
+public $pdo = null;
 
 
 	function __construct() 
@@ -15,6 +15,9 @@ protected $pdo = null;
 	function __destruct() 
 	{
 		$this->pdo = null;
+	}
+	public function getpdo(){
+		return $this->pdo;
 	}
 	
 }
