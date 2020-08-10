@@ -5,7 +5,7 @@ include 'user.php';
 
 session_start();	
 	if(isset($_POST['query'])){
-	$user=$_SESSION['user'];
+	$user = new User();
 	$user->wakeupDBConnection();
 	$results = $user->lookupUser($_POST['query']);
 	echo $results;

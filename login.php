@@ -5,34 +5,24 @@ include 'usermanagement.php';
 include 'user.php';
 
 session_start();
-if(  isset($_SESSION['username']) )
-{
+if(isset($_SESSION['username'])){
   header("location:home.php");
   die();
 }
   if(isset($_POST['login_btn']))
   {
+  if(isset($_SESSION['errormsg'])AND !is_null($_SESSION['errormsg'])){
+	$errortoshow = $_SESSION['errormsg'];
+	echo '<script language="javascript">';
+	echo "alert('$errortoshow')";
+	echo '</script>';};
+	
 	  $username=$_POST['username'];
 	  echo($username);
       $password=$_POST['password'];
-	  $password = md5($password);
-{	  $conn = new UserManagement();
+	  $conn = new UserManagement();
       $result = $conn->Login($username,$password);
-      if($result['flag'] == 1)
-      {
-            $_SESSION['message']="Je bent ingelogd";
-            $_SESSION['username']=$username;
-			$user = new User($username);
-			$_SESSION['user']=$user;
-            header("location:home.php");
-        }
-       else
-       {
-              	echo '<script language="javascript">';
-			    echo 'alert("Wachtwoord onjuist of de gebruiker bestaat niet.")';
-			    echo '</script>';
-       }
-  }}
+  }
   
 ?>
 

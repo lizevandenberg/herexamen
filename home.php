@@ -5,14 +5,12 @@ include 'usermanagement.php';
 include 'user.php';
 include 'transaction.php';
 session_start();
-
-	$user=$_SESSION['user'];
+	$user = new User();
 	$userid = $user->getuserid();
 	$username = $user->getusername();
 	$tran = new Transaction();
-	$_SESSION['tran']=$tran;
 	$transactionlist = $tran->getTransactionOverview($userid);	
-	$balance = $tran->getbalance($userid);	
+	$balance = $tran->getbalance($userid);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +36,13 @@ session_start();
 		outline: 0;
 	}
 	</style>	
-  
+  <?php
+  if(isset($_SESSION['errormsg'])AND !is_null($_SESSION['errormsg'])){
+	$errortoshow = $_SESSION['errormsg'];
+	echo '<script language="javascript">';
+	echo "alert('$errortoshow')";
+	echo '</script>';};
+	?>
 </head>
 <body>
 
@@ -74,9 +78,16 @@ $string = $row['transactioninfo'];
 $id = $row['transactionId'];
 echo("<li id='$id' >$string </li>");
 }
-echo '</ul>';?>
+echo '</ul>';
+
+?>
 	<label class="demo-label">Search users:HALLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOO</label><br/> 
+	<form action="executetransfer.php" method="post">
 	<input type="text" name="userlookup" id="userlookup" class="typeahead"/>
+	<input type="text" name="amount" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" id="amount" />
+	<input type="text" name="comment" id="comment" />
+	<input type="submit" value="Submit">
+	</form>
 	
 </div>
 <a href="logout.php">Log out</a>
@@ -108,25 +119,36 @@ echo '</ul>';?>
 </script>
 <script>
 const label = document.getElementById('currentbalance'); // Get the list where we will place our authors
-const url = 'checkbalance.php'; // Get 10 random users
-
+const balanceurl = 'checkbalance.php'; // Get 10 random users
+const transactionurl = 'checknewtransactions.php';
+const getData = (arr, value) => arr.filter(o => o.ccy.includes(value));
+var ul = document.getElementById('transactions');
 
  (function loop() {
   setTimeout(function () {
-	  fetch(url).then((response) => {
+	  fetch(balanceurl).then((response) => {
     console.log(response);
     response.json().then((data) => {
         console.log(data);
 		label.innerHTML=data;
     });
 });
-    loop();}, 9000);
+
+	  fetch(transactionurl).then((response) => {
+    response.json().then((transaction) => {
+        console.log(transaction.value);
+		if (transaction.length !== 1){
+		}
+		
+		
+    });
+});
+    loop();}, 10000);
 }());
 
-var ul = document.getElementById('transactions');  // Parent
-
 ul.addEventListener('click', function(e) {
-    if (e.target.tagName === 'LI'){  // Check if the element is a LI
+    if (e.target.tagName === 'LI'){	  
+		window.location.href = "getdetails.php/?query="+e.target.id;	
     }
 });
 

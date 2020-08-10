@@ -5,11 +5,11 @@ include 'user.php';
 include 'transaction.php';
 
 session_start();	
-	$username=$_SESSION['username'];
 	$user = new User();
-	$tran = new Transaction();
 	$userid = $user->getuserid();
-	$user->breakDBConnection();	
-	$results = $tran->getbalance($userid);	
-	echo $results;
+	$username = $user->getusername();
+	$tran = new Transaction();
+	$transactionlist = $tran->getTransactionOverview($userid, True);
+	echo($transactionlist);
+	
 ?>

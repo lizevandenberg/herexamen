@@ -5,8 +5,14 @@ class User extends MysqlDB
 	protected $userid = null;
 	protected $username = null;
     
-	public function __construct($username){
+	public function __construct(){
 		parent::__construct();
+		  if(!isset($_SESSION['username'])){
+		  header("location:login.php");
+		  die();
+		}
+		
+		$username = $_SESSION['username'];
 		$this->setusername($username);
 		$this->setuserid($username);
 	} 
@@ -68,7 +74,7 @@ class User extends MysqlDB
 		else{
 			error_log("fatal error. Non numeric userid or userid is null",0);
 		}
-		return $this->userid;
+		return $userid;
 		
 	    }
 		else{

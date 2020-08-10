@@ -34,7 +34,6 @@ if (isset($_POST['register_btn'])){
 
             if (($password == $password2) and (strlen($password) > 4))
             { //Create User
-                $password = md5($password); //hash password before storing for security purposes
 				$conn->RegisterNewUser($username,$email, $password,$firstname,$lastname);
 				$conn->InitialWalletFill($firstname,$lastname);
                 $_SESSION['username'] = $username;
