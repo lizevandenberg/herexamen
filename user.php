@@ -85,7 +85,7 @@ class User extends MysqlDB
 	}
 	
 	public function lookupUser($initials){
-		$LookupUserId = $this->pdo->prepare("SELECT username, firstname, lastname FROM userlookup WHERE LOWER(username) like CONCAT('%', LOWER(?), '%')");
+		$LookupUserId = $this->pdo->prepare("SELECT username, firstname, lastname FROM userlookup WHERE LOWER(CONCAT(firstname,'',lastname)) like CONCAT('%', LOWER(?), '%')");
         $LookupUserId->bindParam(1, $initials);
         $LookupUserId->execute();
         $result = $LookupUserId->fetchAll(PDO::FETCH_ASSOC);

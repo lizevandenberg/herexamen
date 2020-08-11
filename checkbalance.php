@@ -5,7 +5,6 @@ include 'user.php';
 include 'transaction.php';
 
 session_start();	
-	$username=$_SESSION['username'];
 	$user = new User();
 	$tran = new Transaction();
 	$userid = $user->getuserid();

@@ -18,12 +18,24 @@ session_start();
   <title>Virtual Currency App</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/typeahead.js"></script>
   <script src="js/jquery-ui.js"></script>
   	<style>
-	.typeahead { border: 2px solid #FFF;border-radius: 4px;padding: 8px 12px;max-width: 300px;min-width: 290px;background: rgba(66, 52, 52, 0.5);color: #FFF;}
+	.typeahead { background-color: #FFFFFF ;
+   color: #C6C3BD;
+   border-color:#C6C3BD ;
+   box-shadow: none;
+   font-family: 'Proxima Nova', sans-serif;;
+   width: 240px;
+   height: 40px;
+   border-radius: 12.5px;
+   font-size: 17px;
+   margin-left: 70px;
+   margin-top: 5px;
+   text-align: center;}
 	.tt-menu { width:300px; }
 	ul.typeahead{margin:0px;padding:10px 0px;}
 	ul.typeahead.dropdown-menu li a {padding: 10px !important;	border-bottom:#CCC 1px solid;color:#FFF;}
@@ -33,7 +45,9 @@ session_start();
 	.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
 		text-decoration: none;
 		background-color: #1f3f41;
-		outline: 0;
+    outline: 0;
+    
+    
 	}
 	</style>	
   <?php
@@ -45,30 +59,21 @@ session_start();
 	?>
 </head>
 <body>
+  
+<div id="menu" >
+<img id="logo2" src="img/logo-8.png" alt="logo">
+<a id="myButton4" href="logout.php">Log out</a>
+<div id="label"><label id="currentbalance" name="currentbalance"><?php echo("$balance"); ?></label><label id="currentbalance1" >&nbsptokens op uw rekening</label></div>
+<p>&nbspu heeft&nbsp</p>
+<h2>Welkom <?php echo("$username"); ?></h2>
 
-<div class="container">
+</div>
 
-<br>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-  <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav center">
-        <li><a href="login.php">Log in</a></li>
-        <li><a href="register.php">registeer</a></li>
-        <li><a href="logout.php">Log out</a></li>
-      </ul>
-
-    </div>
-  </div>
-</nav>
-
-
-<main class="main-content">
- <div class="col-md-6 col-md-offset-4">
-<h1>Home</h1>
-<label id="currentbalance" name="currentbalance"><?php echo("$balance"); ?></label>
-<div>
+<div id="overzicht">
+<div id="topmenu">
+<h1>Overzicht</h1>
+</div>
+<div id="ondermenu">
 <?php
 $transactions = json_decode($transactionlist);
 echo '<ul id="transactions">';
@@ -79,24 +84,25 @@ $id = $row['transactionId'];
 echo("<li id='$id' >$string </li>");
 }
 echo '</ul>';
-
 ?>
-	<label class="demo-label">Search users:HALLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOO</label><br/> 
-	<form action="executetransfer.php" method="post">
-	<input type="text" name="userlookup" id="userlookup" class="typeahead"/>
-	<input type="text" name="amount" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" id="amount" />
-	<input type="text" name="comment" id="comment" />
-	<input type="submit" value="Submit">
+</div>
+</div>
+
+<div id="overzicht">
+<div id="topmenu1">
+<h1>Transfer</h1>
+</div>
+<div id="ondermenu1">
+<form action="executetransfer.php" method="post">
+	<input type="text" placeholder="Gebruiker" name="userlookup" id="userlookup" class="typeahead"/><br>
+	<input id="form4" type="text" placeholder="Bedrag" name="amount" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" id="amount" /><br>
+	<input id="form4" type="text" placeholder="Mededeling" name="comment" id="comment" /><br>
+	<input id="myButton5" type="submit" value="Submit">
 	</form>
-	
 </div>
-<a href="logout.php">Log out</a>
-</div>
-</main>
 </div>
 
 </body>
-
 <script>
     $(document).ready(function () {
         $('#userlookup').typeahead({
@@ -118,10 +124,9 @@ echo '</ul>';
     });
 </script>
 <script>
-const label = document.getElementById('currentbalance'); // Get the list where we will place our authors
-const balanceurl = 'checkbalance.php'; // Get 10 random users
+const label = document.getElementById('currentbalance'); 
+const balanceurl = 'checkbalance.php'; 
 const transactionurl = 'checknewtransactions.php';
-const getData = (arr, value) => arr.filter(o => o.ccy.includes(value));
 var ul = document.getElementById('transactions');
 
  (function loop() {
@@ -151,8 +156,5 @@ ul.addEventListener('click', function(e) {
 		window.location.href = "getdetails.php/?query="+e.target.id;	
     }
 });
-
-
-
 </script>
 </html>
