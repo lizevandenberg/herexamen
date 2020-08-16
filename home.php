@@ -4,7 +4,7 @@ include 'mysqldb.php';
 include 'usermanagement.php';
 include 'user.php';
 include 'transaction.php';
-session_start();
+session_start(); 
 	$user = new User();
 	$userid = $user->getuserid();
 	$username = $user->getusername();
@@ -126,7 +126,6 @@ echo '</ul>';
 <script>
 const label = document.getElementById('currentbalance'); 
 const balanceurl = 'checkbalance.php'; 
-const transactionurl = 'checknewtransactions.php';
 var ul = document.getElementById('transactions');
 
  (function loop() {
@@ -136,16 +135,6 @@ var ul = document.getElementById('transactions');
     response.json().then((data) => {
         console.log(data);
 		label.innerHTML=data;
-    });
-});
-
-	  fetch(transactionurl).then((response) => {
-    response.json().then((transaction) => {
-        console.log(transaction.value);
-		if (transaction.length !== 1){
-		}
-		
-		
     });
 });
     loop();}, 10000);

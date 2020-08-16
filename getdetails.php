@@ -17,6 +17,7 @@ session_start();
 	$comment = $result['comment'];
 	$amount = $result['amount'];
 	$timestamp = $result['timestamp'];
+	$balance = $tran->getbalance($userid);
 	
 	
 ?>

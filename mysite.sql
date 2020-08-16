@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mysite`
+-- Database: `lizeva1q_mysite`
 --
-CREATE DATABASE IF NOT EXISTS `mysite` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `mysite`;
+CREATE DATABASE IF NOT EXISTS `lizeva1q_mysite` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `lizeva1q_mysite`;
 
 -- --------------------------------------------------------
 
@@ -155,7 +155,7 @@ TRUNCATE TABLE `users`;
 DROP TABLE IF EXISTS `balances`;
 
 DROP VIEW IF EXISTS `balances`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `balances`  AS  select (coalesce(`pb`.`positivebalance`,0) - coalesce(`nb`.`negativebalance`,0)) AS `TotalBalance`,coalesce(`pb`.`userid`,`nb`.`userid`) AS `userid`,coalesce(`pb`.`voornaam`,`nb`.`voornaam`) AS `voornaam`,coalesce(`pb`.`achternaam`,`nb`.`achternaam`) AS `achternaam` from (`negativebalances` `nb` left join `positivebalances` `pb` on((`nb`.`userid` = `pb`.`userid`))) union select (coalesce(`pb`.`positivebalance`,0) - coalesce(`nb`.`negativebalance`,0)) AS `TotalBalance`,coalesce(`pb`.`userid`,`nb`.`userid`) AS `userid`,coalesce(`pb`.`voornaam`,`nb`.`voornaam`) AS `voornaam`,coalesce(`pb`.`achternaam`,`nb`.`achternaam`) AS `achternaam` from (`positivebalances` `pb` left join `negativebalances` `nb` on((`nb`.`userid` = `pb`.`userid`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`lizeva1q_root`@`localhost` SQL SECURITY DEFINER VIEW `balances`  AS  select (coalesce(`pb`.`positivebalance`,0) - coalesce(`nb`.`negativebalance`,0)) AS `TotalBalance`,coalesce(`pb`.`userid`,`nb`.`userid`) AS `userid`,coalesce(`pb`.`voornaam`,`nb`.`voornaam`) AS `voornaam`,coalesce(`pb`.`achternaam`,`nb`.`achternaam`) AS `achternaam` from (`negativebalances` `nb` left join `positivebalances` `pb` on((`nb`.`userid` = `pb`.`userid`))) union select (coalesce(`pb`.`positivebalance`,0) - coalesce(`nb`.`negativebalance`,0)) AS `TotalBalance`,coalesce(`pb`.`userid`,`nb`.`userid`) AS `userid`,coalesce(`pb`.`voornaam`,`nb`.`voornaam`) AS `voornaam`,coalesce(`pb`.`achternaam`,`nb`.`achternaam`) AS `achternaam` from (`positivebalances` `pb` left join `negativebalances` `nb` on((`nb`.`userid` = `pb`.`userid`))) ;
 
 -- --------------------------------------------------------
 
@@ -165,7 +165,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `negativebalances`;
 
 DROP VIEW IF EXISTS `negativebalances`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `negativebalances`  AS  select coalesce(sum(`tr`.`amount`),0) AS `negativebalance`,coalesce(`senderlookup`.`userid`,0) AS `userid`,coalesce(`senderlookup`.`firstname`,'ADMIN') AS `voornaam`,coalesce(`senderlookup`.`lastname`,'M1000') AS `achternaam` from (`transactions` `tr` left join `userlookup` `senderlookup` on((`senderlookup`.`userid` = `tr`.`sender`))) group by `senderlookup`.`userid` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`lizeva1q_root`@`localhost` SQL SECURITY DEFINER VIEW `negativebalances`  AS  select coalesce(sum(`tr`.`amount`),0) AS `negativebalance`,coalesce(`senderlookup`.`userid`,0) AS `userid`,coalesce(`senderlookup`.`firstname`,'ADMIN') AS `voornaam`,coalesce(`senderlookup`.`lastname`,'M1000') AS `achternaam` from (`transactions` `tr` left join `userlookup` `senderlookup` on((`senderlookup`.`userid` = `tr`.`sender`))) group by `senderlookup`.`userid` ;
 
 -- --------------------------------------------------------
 
@@ -175,7 +175,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `positivebalances`;
 
 DROP VIEW IF EXISTS `positivebalances`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `positivebalances`  AS  select coalesce(sum(`tr`.`amount`),0) AS `positivebalance`,`receiverlookup`.`userid` AS `userid`,`receiverlookup`.`lastname` AS `voornaam`,`receiverlookup`.`firstname` AS `achternaam` from (`transactions` `tr` left join `userlookup` `receiverlookup` on((`receiverlookup`.`userid` = `tr`.`receiver`))) group by `receiverlookup`.`userid` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`lizeva1q_root`@`localhost` SQL SECURITY DEFINER VIEW `positivebalances`  AS  select coalesce(sum(`tr`.`amount`),0) AS `positivebalance`,`receiverlookup`.`userid` AS `userid`,`receiverlookup`.`lastname` AS `voornaam`,`receiverlookup`.`firstname` AS `achternaam` from (`transactions` `tr` left join `userlookup` `receiverlookup` on((`receiverlookup`.`userid` = `tr`.`receiver`))) group by `receiverlookup`.`userid` ;
 
 -- --------------------------------------------------------
 
@@ -185,7 +185,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `transactionoverwiew`;
 
 DROP VIEW IF EXISTS `transactionoverwiew`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `transactionoverwiew`  AS  select `tr`.`transactionId` AS `transactionId`,coalesce(concat(`ulsender`.`firstname`,' ',`ulsender`.`lastname`),'ADMIN M1000') AS `sender`,concat(`ulreceiver`.`firstname`,' ',`ulreceiver`.`lastname`) AS `receiver`,`tr`.`sender` AS `senderid`,`tr`.`receiver` AS `receiverid`,`tr`.`amount` AS `amount`,`tr`.`comment` AS `comment`,`tr`.`timestamp` AS `timestamp` from ((`transactions` `tr` left join `userlookup` `ulsender` on((`tr`.`sender` = `ulsender`.`userid`))) left join `userlookup` `ulreceiver` on((`tr`.`receiver` = `ulreceiver`.`userid`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`lizeva1q_root`@`localhost` SQL SECURITY DEFINER VIEW `transactionoverwiew`  AS  select `tr`.`transactionId` AS `transactionId`,coalesce(concat(`ulsender`.`firstname`,' ',`ulsender`.`lastname`),'ADMIN M1000') AS `sender`,concat(`ulreceiver`.`firstname`,' ',`ulreceiver`.`lastname`) AS `receiver`,`tr`.`sender` AS `senderid`,`tr`.`receiver` AS `receiverid`,`tr`.`amount` AS `amount`,`tr`.`comment` AS `comment`,`tr`.`timestamp` AS `timestamp` from ((`transactions` `tr` left join `userlookup` `ulsender` on((`tr`.`sender` = `ulsender`.`userid`))) left join `userlookup` `ulreceiver` on((`tr`.`receiver` = `ulreceiver`.`userid`))) ;
 
 -- --------------------------------------------------------
 
@@ -195,7 +195,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `userlookup`;
 
 DROP VIEW IF EXISTS `userlookup`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `userlookup`  AS  select `users`.`userid` AS `userid`,`users`.`firstname` AS `firstname`,`users`.`lastname` AS `lastname`,`users`.`username` AS `username` from `users` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`lizeva1q_root`@`localhost` SQL SECURITY DEFINER VIEW `userlookup`  AS  select `users`.`userid` AS `userid`,`users`.`firstname` AS `firstname`,`users`.`lastname` AS `lastname`,`users`.`username` AS `username` from `users` ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
