@@ -2,10 +2,9 @@
 
 class MysqlDB
 {
-	
-private $dsn = "mysql:host=localhost;dbname=lizeva1q_mysite";
-private $user = "lizeva1q_root";
-private $passwd = "Utopie6december";
+private $dsn = "mysql:host=localhost;dbname=mysite";
+private $user = "root";
+private $passwd = "root";
 public $pdo = null;
 
 

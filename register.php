@@ -13,7 +13,7 @@ if (isset($_POST['register_btn'])){
     if (substr($email, -22) != $PostfixWhitelist)
     {
         echo '<script language="javascript">';
-        echo 'alert("Alleen Thomasmore emails. ")';
+        echo 'alert("Only valid TMM emails allowed ")';
         echo '</script>';
     }
     else
