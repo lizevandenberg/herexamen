@@ -16,7 +16,7 @@ session_start();
 	$user->breakDBConnection();	
 	$availablefunds = $tran->getbalance($userid);	
 	
-	if($amount<$availablefunds){
+	if($amount<($availablefunds+1)){
 		$response = $tran->createTransaction($userid, $recipientuserid, $amount, $comment);
 	if($response==True){
 		header("location:home.php");

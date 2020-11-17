@@ -55,7 +55,8 @@ session_start();
 	$errortoshow = $_SESSION['errormsg'];
 	echo '<script language="javascript">';
 	echo "alert('$errortoshow')";
-	echo '</script>';};
+    echo '</script>';};
+    unset($_SESSION['errormsg']);
 	?>
 </head>
 <body>
@@ -136,16 +137,6 @@ var ul = document.getElementById('transactions');
     response.json().then((data) => {
         console.log(data);
 		label.innerHTML=data;
-    });
-});
-
-	  fetch(transactionurl).then((response) => {
-    response.json().then((transaction) => {
-        console.log(transaction.value);
-		if (transaction.length !== 1){
-		}
-		
-		
     });
 });
     loop();}, 10000);

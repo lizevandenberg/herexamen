@@ -18,8 +18,7 @@ if(isset($_SESSION['username'])){
 	echo '</script>';};
 	
 	  $username=$_POST['username'];
-	  echo($username);
-      $password=$_POST['password'];
+    $password=$_POST['password'];
 	  $conn = new UserManagement();
       $result = $conn->Login($username,$password);
   }
